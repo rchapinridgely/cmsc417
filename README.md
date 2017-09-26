@@ -12,13 +12,13 @@ Begin by reading the project description in the project2.pdf file. Read the desc
 ## Directory Structure
 In order to simplify development, we have created a directory structure for you to develop the project. Please **DO NOT** modify this structure. 
 
-###student
+### student
 This is where you should write your code. We have already projected you with a server.c file. Use this file to write your code; we have already included all of the necessary libraries for you. Write all of your code in this file.
 
-###build
+### build
 Do not modify anything in this directory, it is used by the Makefile as a staging area. You will run your compiled code from this directory.
 
-###public_tests
+### public_tests
 We have given you two public tests in the form of precompiled executables. The code was compiled in the CORE Guest OS so you need to run it in the same environment. 
 
 #### Clients
