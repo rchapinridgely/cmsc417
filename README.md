@@ -1,5 +1,10 @@
 # CMSC417 Project 2
 
+
+## Due Date
+Due October 9th 2017 11:00PM (https://submit.cs.umd.edu)
+
+
 ## Overview and Warnings
 This project may seem deceptively simple. While the project is trivial in nature, there is a substantial amount of error handling to be implemented for non-conforming clients. The purpose of this assignment is to illustrate the complexity of handling clients which do not conform to a protocol. 
 
