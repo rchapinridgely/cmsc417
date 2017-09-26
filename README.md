@@ -26,7 +26,7 @@ We have given you two public tests in the form of precompiled executables. The c
 * client2 is a non-conforming client
 
 #### Sample Usage
-./client1 localhost 9090 cmsc417000 Andrew
+./client1 localhost 9090 cmsc417000 Andrew  
 ./client2 localhost 9091 cmsc417001 Andrew 
 
 ## Building
