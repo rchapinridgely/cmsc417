@@ -2,7 +2,7 @@
 
 
 ## Due Date
-Due October 9th 2017 11:00PM (https://submit.cs.umd.edu)
+Due October 11th 2017 11:00PM (https://submit.cs.umd.edu)
 
 
 ## Overview and Warnings
