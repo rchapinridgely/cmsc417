@@ -154,7 +154,7 @@ int main (int argc, char **argv){
         printf("SERV_BYE: %s\n",buffer);
         fflush(stdout);
 
-        if (send(clientSocket, buffer, strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 1,0) != sizeof(buffer)){
+        if (send(clientSocket, buffer, strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 1,0) != strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 1){
           perror("Send Failure");
           exit(1);
         }
