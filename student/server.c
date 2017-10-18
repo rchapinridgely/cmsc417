@@ -82,7 +82,11 @@ int main (int argc, char **argv){
 
     strcpy(clientIP, inet_ntoa(clientAddress.sin_addr));
 
+    printf("Message: %s\n", buffer);
+    fflush(stdout);
+
     token = strtok(buffer, SPACE);
+    printf("%s\n",token);
     if (strcmp(token, MAGIC_STRING) != 0){
       printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
@@ -126,11 +130,6 @@ int main (int argc, char **argv){
       perror("Send Failure");
       exit(1);
     }
-
-
-
-    printf("Message: %s\n", buffer);
-    fflush(stdout);
 
   }
 
