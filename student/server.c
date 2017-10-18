@@ -80,7 +80,7 @@ int main (int argc, char **argv){
       perror("Recieve failed");
       exit(1);
     }
-    buffer[recievedMessageSize] = '\0';
+    buffer[recievedMessageSize - 1] = '\0';
 
     strcpy(clientIP, inet_ntoa(clientAddress.sin_addr));
 
@@ -141,7 +141,7 @@ int main (int argc, char **argv){
       exit(1);
     }
 
-    buffer[recievedMessageSize] = '\0';
+    buffer[recievedMessageSize - 1] = '\0';
 
     printf("Message2: %s\n",buffer);
 
