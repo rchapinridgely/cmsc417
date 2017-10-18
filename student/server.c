@@ -151,7 +151,7 @@ int main (int argc, char **argv){
         fflush(stdout);
         break;
       } else {
-        snprintf(buffer, sizeof(buffer), "%s", MAGIC_STRING);
+        snprintf(buffer, sizeof(buffer), "%s %s", MAGIC_STRING, SERVER_BYE);
         printf("SERV_BYE: %s\n",buffer);
         fflush(stdout);
 
