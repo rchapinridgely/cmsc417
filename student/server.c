@@ -33,6 +33,7 @@ int main (int argc, char **argv){
   char buffer[MAX_STR_SIZE];
   char *token;
   char clientIP[MAX_STR_SIZE];
+  char cookHolder[5];
 
   //Check right number of inputs
   if (argc < 2){
@@ -141,6 +142,50 @@ int main (int argc, char **argv){
 
     printf("Message2: %s\n",buffer);
 
+    token = strtok(buffer, SPACE);
+//    printf("%s\n",token);
+    if (strcmp(token, MAGIC_STRING) != 0){
+      printf("**Magic Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      close(clientSocket);
+      fflush(stdout);
+    }
+
+    token = strtok(NULL, SPACE);
+//    printf("%s\n",token);
+    if (strcmp(token, CLIENT_BYE) != 0){
+      printf("**Signal Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      close(clientSocket);
+      fflush(stdout);
+    }
+
+    //Not enforced
+    token = strtok(NULL, SPACE);
+    snprintf(cookHolder, sizeof(cookHolder), "%d", cookie);
+//    printf("%s\n",token);
+    if (strcmp(token, cookHolder) != 0){
+      printf("**Cookie Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      close(clientSocket);
+      fflush(stdout);
+    }
+
+    token = strtok(NULL, SPACE);
+//    printf("%s\n",token);
+    if (token != NULL){
+      printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      close(clientSocket);
+      fflush(stdout);
+    }
+
+    snprintf(buffer, sizeof(buffer), "%s %s", MAGIC_STRING, SERVER_BYE);
+    printf("SERV_BYE: %s\n",buffer);
+    fflush(stdout);
+
+    if (send(clientSocket, buffer, sizeof(buffer),0) != sizeof(buffer)){
+      perror("Send Failure");
+      exit(1);
+    }
+
+    close(clientSocket);
   }
 
 
