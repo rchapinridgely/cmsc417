@@ -83,10 +83,9 @@ int main (int argc, char **argv){
     strcpy(clientIP, inet_ntoa(clientAddress.sin_addr));
 
     printf("Message: %s\n", buffer);
-    fflush(stdout);
 
     token = strtok(buffer, SPACE);
-    printf("%s\n",token);
+//    printf("%s\n",token);
     if (strcmp(token, MAGIC_STRING) != 0){
       printf("**Magic Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
@@ -94,7 +93,7 @@ int main (int argc, char **argv){
     }
 
     token = strtok(NULL, SPACE);
-    printf("%s\n",token);
+//    printf("%s\n",token);
     if (strcmp(token, HELLO) != 0){
       printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
@@ -103,14 +102,14 @@ int main (int argc, char **argv){
 
     //Not enforced
     token = strtok(NULL, SPACE);
-    printf("%s\n",token);
+//    printf("%s\n",token);
     if (token == NULL){
       printf("**UN Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
     token = strtok(NULL, SPACE);
-    printf("%s\n",token);
+//    printf("%s\n",token);
     if (token == NULL){
       printf("**Name Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
@@ -118,15 +117,17 @@ int main (int argc, char **argv){
     }
 
     token = strtok(NULL, SPACE);
-    printf("%s\n",token);
+//    printf("%s\n",token);
     if (token != NULL){
       printf("**Count Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
+    printf("Message: %s\n", buffer);
 
-    cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)))*13 % 1111;
-    snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+    printf("%s\n","Here!");
+    cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)))*13 % 1111;
+    snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, clientIP, clientAddress.sin_port);
     printf("STATUS: %s\n",buffer);
     fflush(stdout);
 
