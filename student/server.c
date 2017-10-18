@@ -93,7 +93,7 @@ int main (int argc, char **argv){
       fflush(stdout);
     }
 
-    token = strtok(buffer, SPACE);
+    token = strtok(NULL, SPACE);
     printf("%s\n",token);
     if (strcmp(token, HELLO) != 0){
       printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
@@ -102,24 +102,24 @@ int main (int argc, char **argv){
     }
 
     //Not enforced
-    token = strtok(buffer, SPACE);
+    token = strtok(NULL, SPACE);
     printf("%s\n",token);
-    if (!token){
+    if (token == NULL){
       printf("**UN Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
-    token = strtok(buffer, SPACE);
+    token = strtok(NULL, SPACE);
     printf("%s\n",token);
-    if (!token){
+    if (token == NULL){
       printf("**Name Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
 
-    token = strtok(buffer, SPACE);
+    token = strtok(NULL, SPACE);
     printf("%s\n",token);
-    if (token){
+    if (token != NULL){
       printf("**Count Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
