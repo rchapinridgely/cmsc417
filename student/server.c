@@ -145,7 +145,7 @@ int main (int argc, char **argv){
     token = strtok(buffer, SPACE);
 //    printf("%s\n",token);
     if (strcmp(token, MAGIC_STRING) != 0){
-      printf("**Magic Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Magic Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
@@ -153,7 +153,7 @@ int main (int argc, char **argv){
     token = strtok(NULL, SPACE);
 //    printf("%s\n",token);
     if (strcmp(token, CLIENT_BYE) != 0){
-      printf("**Signal Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
@@ -161,9 +161,10 @@ int main (int argc, char **argv){
     //Not enforced
     token = strtok(NULL, SPACE);
     snprintf(cookHolder, sizeof(cookHolder), "%d", cookie);
-//    printf("%s\n",token);
+    printf("%s\n",token);
+    printf("%s\n",cookHolder);
     if (strcmp(token, cookHolder) != 0){
-      printf("**Cookie Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Cookie Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
