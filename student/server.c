@@ -33,8 +33,8 @@ int main (int argc, char **argv){
   char buffer[MAX_STR_SIZE];
   char clientIP[MAX_STR_SIZE];
   char cookHolder[5];
-  char *userName;
-  char *name;
+  char userName[MAX_STR_SIZE];
+  char name[MAX_STR_SIZE];
 
   //Check right number of inputs
   if (argc < 2){
