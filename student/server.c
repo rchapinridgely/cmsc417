@@ -116,7 +116,7 @@ int main (int argc, char **argv){
       printf("STATUS: %s\n",buffer);
       fflush(stdout);
 
-      if (send(clientSocket, buffer, sizeof(buffer),0) != sizeof(buffer)){
+      if (send(clientSocket, buffer, strlen(buffer),0) != strlen(buffer)){
         perror("Send Failure");
         exit(1);
       }
