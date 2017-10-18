@@ -154,12 +154,12 @@ int main (int argc, char **argv){
         printf("SERV_BYE: %s\n",buffer);
         fflush(stdout);
 
-        if (send(clientSocket, buffer, strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 1,0) != strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 1){
+        if (send(clientSocket, buffer, strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 2,0) != strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 2){
           perror("Send Failure");
           exit(1);
         }
-
         printf("%s %s %s from %s:%d", cookHolder, userName, name, inet_ntoa(clientAddress.sin_addr),clientAddress.sin_port);
+        fflush(stdout);
         close(clientSocket);
       }
     }
