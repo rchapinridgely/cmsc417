@@ -151,11 +151,11 @@ int main (int argc, char **argv){
         fflush(stdout);
         break;
       } else {
-        snprintf(buffer, sizeof(buffer), "%s %s", MAGIC_STRING, SERVER_BYE);
+        snprintf(buffer, sizeof(buffer), "%s", MAGIC_STRING);
         printf("SERV_BYE: %s\n",buffer);
         fflush(stdout);
 
-        if (send(clientSocket, buffer, strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 2,0) != strlen(MAGIC_STRING) + strlen(SERVER_BYE) + 2){
+        if (send(clientSocket, buffer, sizeof(buffer),0) != sizeof(buffer)){
           perror("Send Failure");
           exit(1);
         }
