@@ -32,7 +32,7 @@ int main (int argc, char **argv){
   unsigned int clientLength;
   char buffer[MAX_STR_SIZE];
   char *token;
-  char *clientIP;
+  char clientIP[MAX_STR_SIZE];
 
   //Check right number of inputs
   if (argc < 2){
