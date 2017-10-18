@@ -10,6 +10,8 @@
 
 #include "common.h"
 
+#define SPACE " "
+
 //Basic socket level code refrenced from TCP-IP Sockets in C.
 
 int main (int argc, char **argv){
@@ -23,6 +25,7 @@ int main (int argc, char **argv){
   unsigned short serverPort;
   unsigned int clientLength;
   char buffer[MAX_STR_SIZE];
+  char *token;
 
   //Check right number of inputs
   if (argc < 2){
@@ -31,7 +34,6 @@ int main (int argc, char **argv){
   }
 
   serverPort = atoi(argv[1]);
-
   //Make socket
   if ((serverSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0){
     perror("Socket Failed");
@@ -72,6 +74,11 @@ int main (int argc, char **argv){
       exit(1);
     }
 
+    token = strtok(buffer, SPACE);
+    if (strcmp(token, MAGIC_STRING) != 0){
+      printf("**Error** from %s:%d", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      close(clientSocket);
+    }
     printf("Message: %s", buffer);
 
   }
