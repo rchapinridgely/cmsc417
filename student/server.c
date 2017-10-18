@@ -31,7 +31,6 @@ int main (int argc, char **argv){
   unsigned short serverPort;
   unsigned int clientLength;
   char buffer[MAX_STR_SIZE];
-  char *token;
   char clientIP[MAX_STR_SIZE];
   char cookHolder[5];
   char *userName;
@@ -88,8 +87,6 @@ int main (int argc, char **argv){
 
     printf("Message: %s\n", buffer);
 
-    token = strtok(buffer, SPACE);
-//    printf("%s\n",token);
     if (strcmp(strtok(buffer, SPACE), MAGIC_STRING) != 0){
       printf("**Magic Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
@@ -106,7 +103,7 @@ int main (int argc, char **argv){
       printf("**Name Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
-    } else if (token != NULL){
+    } else if (strtok(NULL, SPACE) != NULL){
       printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
