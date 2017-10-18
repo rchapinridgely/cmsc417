@@ -118,7 +118,7 @@ int main (int argc, char **argv){
 
     cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)))*13 % 1111;
     snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, clientIP, clientAddress.sin_port);
-    print(buffer);
+    printf("STATUS: %s\n",buffer);
     fflush(stdout);
 
     if (send(clientSocket, buffer, sizeof(buffer),0) != sizeof(buffer)){
@@ -127,6 +127,7 @@ int main (int argc, char **argv){
     }
 
     printf("Message: %s\n", buffer);
+    fflush(stdout);
 
   }
 
