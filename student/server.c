@@ -95,7 +95,7 @@ int main (int argc, char **argv){
     token = strtok(NULL, SPACE);
 //    printf("%s\n",token);
     if (strcmp(token, HELLO) != 0){
-      printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("**Signal Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
@@ -104,14 +104,14 @@ int main (int argc, char **argv){
     token = strtok(NULL, SPACE);
 //    printf("%s\n",token);
     if (token == NULL){
-      printf("**UN Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("**UN Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
     token = strtok(NULL, SPACE);
 //    printf("%s\n",token);
     if (token == NULL){
-      printf("**Name Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("**Name Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
@@ -119,15 +119,13 @@ int main (int argc, char **argv){
     token = strtok(NULL, SPACE);
 //    printf("%s\n",token);
     if (token != NULL){
-      printf("**Count Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
-    printf("Message: %s\n", buffer);
 
-    printf("%s\n","Here!");
     cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)))*13 % 1111;
-    snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, clientIP, clientAddress.sin_port);
+    snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
     printf("STATUS: %s\n",buffer);
     fflush(stdout);
 
@@ -135,6 +133,13 @@ int main (int argc, char **argv){
       perror("Send Failure");
       exit(1);
     }
+
+    if (recv(clientSocket, buffer, MAX_STR_SIZE, 0) < 0){
+      perror("Recieve Failure");
+      exit(1);
+    }
+
+    printf("Message2: %s\n",buffer);
 
   }
 
