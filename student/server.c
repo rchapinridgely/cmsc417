@@ -95,11 +95,11 @@ int main (int argc, char **argv){
       printf("**Signal Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
-    } else if ((userName = strtok(NULL, SPACE)) == NULL){
+    } else if (strcpy(userName, strtok(NULL, SPACE)) == NULL){
       printf("**UN Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
-    } else if ((name = strtok(NULL, SPACE)) == NULL){
+    } else if (strcpy(name, strtok(NULL, SPACE)) == NULL){
       printf("**Name Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
