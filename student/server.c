@@ -92,6 +92,7 @@ int main (int argc, char **argv){
       printf("**Magic Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
 
     token = strtok(NULL, SPACE);
@@ -100,6 +101,7 @@ int main (int argc, char **argv){
       printf("**Signal Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
 
     //Not enforced
@@ -109,6 +111,7 @@ int main (int argc, char **argv){
       printf("**UN Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
     token = strtok(NULL, SPACE);
 //    printf("%s\n",token);
@@ -116,6 +119,7 @@ int main (int argc, char **argv){
       printf("**Name Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
 
     token = strtok(NULL, SPACE);
@@ -124,6 +128,7 @@ int main (int argc, char **argv){
       printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
 
     cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)))*13 % 1111;
@@ -151,6 +156,7 @@ int main (int argc, char **argv){
       printf("**Magic Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
 
     token = strtok(NULL, SPACE);
@@ -159,17 +165,17 @@ int main (int argc, char **argv){
       printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
 
     //Not enforced
     token = strtok(NULL, SPACE);
     snprintf(cookHolder, sizeof(cookHolder), "%d", cookie);
-    printf("%s\n",token);
-    printf("%s\n",cookHolder);
     if (strcmp(token, cookHolder) != 0){
       printf("**Cookie Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
 
     token = strtok(NULL, SPACE);
@@ -178,6 +184,7 @@ int main (int argc, char **argv){
       printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
+      break;
     }
 
     snprintf(buffer, sizeof(buffer), "%s %s", MAGIC_STRING, SERVER_BYE);
