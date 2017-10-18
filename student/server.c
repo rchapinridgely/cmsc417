@@ -75,7 +75,6 @@ int main (int argc, char **argv){
       exit(1);
     }
 
-    printf("Handling client %s\n", inet_ntoa(clientAddress.sin_addr));
     fflush(stdout);
     if ((recievedMessageSize = recv(clientSocket, buffer, MAX_STR_SIZE, 0)) < 0){
       perror("Recieve failed");
@@ -85,36 +84,31 @@ int main (int argc, char **argv){
 
     strcpy(clientIP, inet_ntoa(clientAddress.sin_addr));
 
-    printf("Message: %s\n", buffer);
-
     if (strcmp(strtok(buffer, SPACE), MAGIC_STRING) != 0){
-      printf("**Magic Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     } else if (strcmp(strtok(NULL, SPACE), HELLO) != 0){
-      printf("**Signal Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     } else if (strcpy(userName, strtok(NULL, SPACE)) == NULL){
-      printf("**UN Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     } else if (strcpy(name, strtok(NULL, SPACE)) == NULL){
-      printf("**Name Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     } else if (strtok(NULL, SPACE) != NULL){
-      printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     } else{
-      printf("NAMES: %s %s\n",userName, name);
 
       cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)))*13 % 1111;
       snprintf(cookHolder, sizeof(cookHolder), "%d", cookie);
       snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
-      printf("STATUS: %s\n",buffer);
-      fflush(stdout);
 
       if (send(clientSocket, buffer, strlen(buffer),0) != strlen(buffer)){
         perror("Send Failure");
@@ -128,34 +122,30 @@ int main (int argc, char **argv){
 
       buffer[recievedMessageSize - 1] = '\0';
 
-      printf("Message2: %s\n",buffer);
-
       if (strcmp(strtok(buffer, SPACE), MAGIC_STRING) != 0){
-        printf("**Magic Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+        printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
         close(clientSocket);
         fflush(stdout);
         break;
       } else if (strcmp(strtok(NULL, SPACE), CLIENT_BYE) != 0){
-        printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+        printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
         close(clientSocket);
         fflush(stdout);
         break;
       } else if (strcmp(strtok(NULL, SPACE), cookHolder) != 0){
-        printf("**Cookie Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+        printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
         close(clientSocket);
         fflush(stdout);
         break;
       } else if (strtok(NULL, SPACE) != NULL){
-        printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+        printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
         close(clientSocket);
         fflush(stdout);
         break;
       } else {
         snprintf(buffer, sizeof(buffer), "%s %s", MAGIC_STRING, SERVER_BYE);
-        printf("SERV_BYE: %s\n",buffer);
-        fflush(stdout);
 
-        if (send(clientSocket, buffer, 19,0) != 19){
+        if (send(clientSocket, buffer, strlen(buffer),0) != strlen(buffer)){
           perror("Send Failure");
           exit(1);
         }
