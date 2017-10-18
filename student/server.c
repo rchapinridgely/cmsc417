@@ -74,12 +74,13 @@ int main (int argc, char **argv){
     }
 
     printf("Handling client %s\n", inet_ntoa(clientAddress.sin_addr));
+    fflush(stdout);
     if ((recievedMessageSize = recv(clientSocket, buffer, MAX_STR_SIZE, 0)) < 0){
       perror("Recieve failed");
       exit(1);
     }
 
-    clientIP = inet_ntoa(clientAddress.sin_addr);
+    strcpy(clientIP, inet_ntoa(clientAddress.sin_addr));
 
     token = strtok(buffer, SPACE);
     if (strcmp(token, MAGIC_STRING) != 0){
@@ -117,7 +118,7 @@ int main (int argc, char **argv){
     }
 
     cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)) + atoi(strtok(clientIP, DOT)))*13 % 1111;
-    snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, clientIP, clientAddress.sin_port);
+    snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
     printf("STATUS: %s\n",buffer);
     fflush(stdout);
 
@@ -125,6 +126,8 @@ int main (int argc, char **argv){
       perror("Send Failure");
       exit(1);
     }
+
+
 
     printf("Message: %s\n", buffer);
     fflush(stdout);
