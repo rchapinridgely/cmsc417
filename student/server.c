@@ -80,21 +80,18 @@ int main (int argc, char **argv){
       perror("Recieve failed");
       exit(1);
     }
-    buffer[recievedMessageSize - 1] = '\0';
+    //buffer[recievedMessageSize - 1] = '\0';
 
     strcpy(clientIP, inet_ntoa(clientAddress.sin_addr));
 
     if (strcmp(strtok(buffer, SPACE), MAGIC_STRING) != 0){
       printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
-      close(clientSocket);
       fflush(stdout);
     } else if (strcmp(strtok(NULL, SPACE), HELLO) != 0){
       printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
-      close(clientSocket);
       fflush(stdout);
     } else if (strcpy(userName, strtok(NULL, SPACE)) == NULL){
       printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
-      close(clientSocket);
       fflush(stdout);
     } else if (strcpy(name, strtok(NULL, SPACE)) == NULL){
       printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
@@ -102,7 +99,6 @@ int main (int argc, char **argv){
       fflush(stdout);
     } else if (strtok(NULL, SPACE) != NULL){
       printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
-      close(clientSocket);
       fflush(stdout);
     } else{
 
@@ -120,30 +116,26 @@ int main (int argc, char **argv){
         exit(1);
       }
 
-      buffer[recievedMessageSize - 1] = '\0';
+      //buffer[recievedMessageSize - 1] = '\0';
 
       if (strcmp(strtok(buffer, SPACE), MAGIC_STRING) != 0){
         printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
-        close(clientSocket);
         fflush(stdout);
         break;
       } else if (strcmp(strtok(NULL, SPACE), CLIENT_BYE) != 0){
         printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
-        close(clientSocket);
         fflush(stdout);
         break;
       } else if (strcmp(strtok(NULL, SPACE), cookHolder) != 0){
         printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
-        close(clientSocket);
         fflush(stdout);
         break;
       } else if (strtok(NULL, SPACE) != NULL){
         printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
-        close(clientSocket);
         fflush(stdout);
         break;
       } else {
-        snprintf(buffer, sizeof(buffer), "%s %s", MAGIC_STRING, SERVER_BYE);
+        snprintf(buffer, sizeof(buffer), "%s %s\n", MAGIC_STRING, SERVER_BYE);
 
         if (send(clientSocket, buffer, strlen(buffer),0) != strlen(buffer)){
           perror("Send Failure");
@@ -151,9 +143,9 @@ int main (int argc, char **argv){
         }
         printf("%s %s %s from %s:%d\n", cookHolder, userName, name, inet_ntoa(clientAddress.sin_addr),clientAddress.sin_port);
         fflush(stdout);
-        close(clientSocket);
       }
     }
+    close(clientSocket);
   }
 
 
