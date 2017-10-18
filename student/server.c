@@ -33,7 +33,7 @@ int main (int argc, char **argv){
   serverPort = atoi(argv[1]);
 
   //Make socket
-  if ((serverSocket = socket(PF_INET, SOCK_STREAM, IPROTO_TCP)) < 0){
+  if ((serverSocket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0){
     perror("Socket Failed");
     exit(1);
   }
@@ -57,11 +57,11 @@ int main (int argc, char **argv){
 
   clientLength = sizeof(clientAddress);
   //Infinite loop while the server waits
-  while(true){
+  for(;;){
 
 
     //Waiting for the client to connect
-    if ((clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddress, clientLength)) < 0){
+    if ((clientSocket = accept(serverSocket, (struct sockaddr *) &clientAddress, &clientLength)) < 0){
       perror("Accept failed");
       exit(1);
     }
@@ -72,7 +72,7 @@ int main (int argc, char **argv){
       exit(1);
     }
 
-    printf("Message: %s", echoBuffer);
+    printf("Message: %s", buffer);
 
   }
 
