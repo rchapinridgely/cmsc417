@@ -34,6 +34,8 @@ int main (int argc, char **argv){
   char *token;
   char clientIP[MAX_STR_SIZE];
   char cookHolder[5];
+  char *userName;
+  char *name;
 
   //Check right number of inputs
   if (argc < 2){
@@ -88,115 +90,82 @@ int main (int argc, char **argv){
 
     token = strtok(buffer, SPACE);
 //    printf("%s\n",token);
-    if (strcmp(token, MAGIC_STRING) != 0){
+    if (strcmp(strtok(buffer, SPACE), MAGIC_STRING) != 0){
       printf("**Magic Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
-      break;
-    }
-
-    token = strtok(NULL, SPACE);
-//    printf("%s\n",token);
-    if (strcmp(token, HELLO) != 0){
+    } else if (strcmp(strtok(NULL, SPACE), HELLO) != 0){
       printf("**Signal Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
-      break;
-    }
-
-    //Not enforced
-    token = strtok(NULL, SPACE);
-//    printf("%s\n",token);
-    if (token == NULL){
+    } else if ((userName = strtok(NULL, SPACE)) == NULL){
       printf("**UN Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
-      break;
-    }
-    token = strtok(NULL, SPACE);
-//    printf("%s\n",token);
-    if (token == NULL){
+    } else if ((name = strtok(NULL, SPACE)) == NULL){
       printf("**Name Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
-      break;
-    }
-
-    token = strtok(NULL, SPACE);
-//    printf("%s\n",token);
-    if (token != NULL){
+    } else if (token != NULL){
       printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
-      break;
-    }
+    } else{
 
-    cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)))*13 % 1111;
-    snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
-    printf("STATUS: %s\n",buffer);
-    fflush(stdout);
-
-    if (send(clientSocket, buffer, sizeof(buffer),0) != sizeof(buffer)){
-      perror("Send Failure");
-      exit(1);
-    }
-
-    if ((recievedMessageSize = recv(clientSocket, buffer, MAX_STR_SIZE, 0)) < 0){
-      perror("Recieve Failure");
-      exit(1);
-    }
-
-    buffer[recievedMessageSize - 1] = '\0';
-
-    printf("Message2: %s\n",buffer);
-
-    token = strtok(buffer, SPACE);
-//    printf("%s\n",token);
-    if (strcmp(token, MAGIC_STRING) != 0){
-      printf("**Magic Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
-      close(clientSocket);
+      cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)))*13 % 1111;
+      snprintf(cookHolder, sizeof(cookHolder), "%d", cookie);
+      snprintf(buffer, sizeof(buffer), "%s %s %d %s:%d", MAGIC_STRING, STATUS, cookie, inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("STATUS: %s\n",buffer);
       fflush(stdout);
-      break;
+
+      if (send(clientSocket, buffer, sizeof(buffer),0) != sizeof(buffer)){
+        perror("Send Failure");
+        exit(1);
+      }
+
+      if ((recievedMessageSize = recv(clientSocket, buffer, MAX_STR_SIZE, 0)) < 0){
+        perror("Recieve Failure");
+        exit(1);
+      }
+
+      buffer[recievedMessageSize - 1] = '\0';
+
+      printf("Message2: %s\n",buffer);
+
+      if (strcmp(strtok(buffer, SPACE), MAGIC_STRING) != 0){
+        printf("**Magic Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+        close(clientSocket);
+        fflush(stdout);
+        break;
+      } else if (strcmp(strtok(NULL, SPACE), CLIENT_BYE) != 0){
+        printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+        close(clientSocket);
+        fflush(stdout);
+        break;
+      } else if (strcmp(strtok(NULL, SPACE), cookHolder) != 0){
+        printf("**Cookie Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+        close(clientSocket);
+        fflush(stdout);
+        break;
+      } else if (strtok(NULL, SPACE) != NULL){
+        printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+        close(clientSocket);
+        fflush(stdout);
+        break;
+      } else {
+        snprintf(buffer, sizeof(buffer), "%s %s", MAGIC_STRING, SERVER_BYE);
+        printf("SERV_BYE: %s\n",buffer);
+        fflush(stdout);
+
+        if (send(clientSocket, buffer, sizeof(buffer),0) != sizeof(buffer)){
+          perror("Send Failure");
+          exit(1);
+        }
+
+        printf("%s %s %s from %s:%d", cookHolder, userName, name, inet_ntoa(clientAddress.sin_addr),clientAddress.sin_port);
+        close(clientSocket);
+      }
     }
-
-    token = strtok(NULL, SPACE);
-//    printf("%s\n",token);
-    if (strcmp(token, CLIENT_BYE) != 0){
-      printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
-      close(clientSocket);
-      fflush(stdout);
-      break;
-    }
-
-    //Not enforced
-    token = strtok(NULL, SPACE);
-    snprintf(cookHolder, sizeof(cookHolder), "%d", cookie);
-    if (strcmp(token, cookHolder) != 0){
-      printf("**Cookie Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
-      close(clientSocket);
-      fflush(stdout);
-      break;
-    }
-
-    token = strtok(NULL, SPACE);
-//    printf("%s\n",token);
-    if (token != NULL){
-      printf("**Count Error** from %s:%d\n", clientIP, clientAddress.sin_port);
-      close(clientSocket);
-      fflush(stdout);
-      break;
-    }
-
-    snprintf(buffer, sizeof(buffer), "%s %s", MAGIC_STRING, SERVER_BYE);
-    printf("SERV_BYE: %s\n",buffer);
-    fflush(stdout);
-
-    if (send(clientSocket, buffer, sizeof(buffer),0) != sizeof(buffer)){
-      perror("Send Failure");
-      exit(1);
-    }
-
-    close(clientSocket);
   }
 
 
