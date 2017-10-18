@@ -108,6 +108,7 @@ int main (int argc, char **argv){
       close(clientSocket);
       fflush(stdout);
     } else{
+      printf("NAMES: %s %s\n",userName, name);
 
       cookie = (atoi(strtok(clientIP, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)) + atoi(strtok(NULL, DOT)))*13 % 1111;
       snprintf(cookHolder, sizeof(cookHolder), "%d", cookie);
@@ -158,7 +159,7 @@ int main (int argc, char **argv){
           perror("Send Failure");
           exit(1);
         }
-        printf("%s %s %s from %s:%d", cookHolder, userName, name, inet_ntoa(clientAddress.sin_addr),clientAddress.sin_port);
+        printf("%s %s %s from %s:%d\n", cookHolder, userName, name, inet_ntoa(clientAddress.sin_addr),clientAddress.sin_port);
         fflush(stdout);
         close(clientSocket);
       }
