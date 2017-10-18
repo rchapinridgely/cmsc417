@@ -88,14 +88,14 @@ int main (int argc, char **argv){
     token = strtok(buffer, SPACE);
     printf("%s\n",token);
     if (strcmp(token, MAGIC_STRING) != 0){
-      printf("**Error** from %s:%d\n", clientIP, clientAddress.sin_port);
+      printf("**Magic Error** from %s:%d\n", clientIP, clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
 
     token = strtok(buffer, SPACE);
     if (strcmp(token, HELLO) != 0){
-      printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("**Signal Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
@@ -103,20 +103,20 @@ int main (int argc, char **argv){
     //Not enforced
     token = strtok(buffer, SPACE);
     if (!token){
-      printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("**UN Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
     token = strtok(buffer, SPACE);
     if (!token){
-      printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("**Name Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
 
     token = strtok(buffer, SPACE);
     if (token){
-      printf("**Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
+      printf("**Count Error** from %s:%d\n", inet_ntoa(clientAddress.sin_addr), clientAddress.sin_port);
       close(clientSocket);
       fflush(stdout);
     }
